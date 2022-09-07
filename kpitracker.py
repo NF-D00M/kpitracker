@@ -20,7 +20,7 @@ def get_data_from_excel():
                                     usecols='C:P')
 
 
-
+    print("--- Original Sig Event Dataframe ---")
     print(df_sigevent.head())
 
     # Remove 00:00:00 values from date column
@@ -42,6 +42,7 @@ def get_data_from_excel():
     # Rearrange Columnds
     df_sigevent = df_sigevent[['Date_New', 'Significant_Event', 'Sport_Code', 'Internal_External', 'Jurisdiction']]
 
+    print("--- Edited Sig Event Dataframe ---")
     print(df_sigevent.to_string())
     return df_sigevent
 
@@ -86,24 +87,37 @@ print("-----------------------")
 
 # Create Sig Event total data frame
 sig_event_dataframe = df_selection["Significant_Event"].value_counts()
+print("--- Significant Event Tally ---")
 print(sig_event_dataframe)
 
 print("-----------------------")
-print("-----------------------")
+print("--- Isolate specific Sig Event ---")
 print(sig_event_dataframe[1:2])
 print("-----------------------")
 sig_total = sig_event_dataframe.sum(axis=0, skipna=True)
+print("--- Sigevent Total ---")
 print("Sigevent total: ",  sig_total)
 print("-----------------------")
 
 # create Sport Code data frame
 sport_code_dataframe = df_selection["Sport_Code"].value_counts()
+print("--- Sport Code Tally) ---")
 print(sport_code_dataframe)
-print("--------------")
-# sport_code_dataframe.columns = ["Code", "Frequency"]
-print(sport_code_dataframe.to_string())
-
 print("-----------------------")
+jurisdiction_dataframe = df_selection["Jurisdiction"].value_counts()
+print("--- Jurisdiction Tally ---")
+print(jurisdiction_dataframe)
+print("-----------------------")
+print("--- International Sig Events ---")
+
+jurisdiction_dataframe = jurisdiction_dataframe.reset_index()
+print(jurisdiction_dataframe)
+
+international = jurisdiction_dataframe.loc[0][1]
+print(international)
+domestic = jurisdiction_dataframe.loc[1][1]
+print(domestic)
+
 
 
 # SIGMA LEVEL
@@ -203,9 +217,11 @@ with middle1_column:
 
 with middle2_collum:
     st.subheader("Domestic: ")
+    st.subheader(international)
 
 with right_column:
     st.subheader("International: ")
+    st.subheader(domestic)
 
 
 
